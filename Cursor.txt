@@ -1,0 +1,22 @@
+--Cursor que muestra datos de las tutorias--
+do $$
+declare 
+descripcion_tutoria int;
+datos record;
+num int;
+--creacion del cursor 
+c_tutoria cursor for select * from profesor, materia, tutoria where 
+profesor.id_pro = materia.id_mat and tutoria.id_tut = materia.id_mat 
+ ;
+ --nombre_pro='1';
+begin
+	for num in c_tutoria
+	loop
+	descripcion_tutoria = descripcion_tutoria + count (num.id_tut);
+	end loop;
+open  c_tutoria;
+fetch c_tutoria into datos;
+raise notice 'Nombre: %, Apellido: %, Materia: %, fecha: %, hora inicio: %, hora fin: %', datos.nombre_pro,
+datos.apellido_pro,datos.descripcion_mat,datos.fecha_tut,datos.horaInicio_tut,datos.horaFin_tut;
+end $$
+language 'plpgsql';
