@@ -1,0 +1,14 @@
+--por medio de un estudiante saber si el estudiante pasa y no necesita titorias
+
+create or replace function calificacion_cla(varchar ,integer) returns bigint
+as
+$calificacion_cla$
+select distinct sum(parcial1_cal+parcial2_cal) from calificacion natural join estudiante
+where 
+estudiante.id_est = calificacion.id_est and id_est = '3';
+
+$calificacion_cla$
+language SQL;
+
+select calificacion_cla('parcial1_cal',3);
+
