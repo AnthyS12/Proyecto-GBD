@@ -1,0 +1,162 @@
+/*
+  --PROYECTO TUTORIAS VIRTUALES--
+   
+Luis Anthony Moreira Lucas 5A
+GESTION DE BASE DE DATOS
+
+*/
+
+--------TABLA CURSO-----------
+create table CURSO(
+ 	id_cur INT not null PRIMARY KEY,
+ 	descripcion_cur VARCHAR(10) not null,
+	cupoMax_cur INT not null
+);
+
+--------TABLA MATERIA---------
+create table MATERIA(
+ 	id_mat INT not null PRIMARY KEY,
+ 	descripcion_mat VARCHAR(30) not null
+);
+
+--------TABLA PROFESOR---------
+create table PROFESOR(
+ 	id_pro INT not null PRIMARY KEY,
+	id_mat INT not null,
+ 	nombre_pro VARCHAR(30) not null,
+	apellido_pro VARCHAR(30) not null,
+	cedula_pro VARCHAR(15) not null,
+	celular_pro VARCHAR(15) not null,	
+	direccion_pro VARCHAR(30) not null,
+	
+	
+	CONSTRAINT profesor_materia_fk foreign key (id_mat)
+ 	references MATERIA (id_mat)match simple
+);
+
+--------TABLA TUTORIA---------
+create table TUTORIA(
+	id_tut INT PRIMARY KEY not nulL,
+	id_mat INT not null,
+	descripcion_tut VARCHAR(30),
+	fecha_tut DATE NOT null,	
+	horaInicio_tut TIME not null,
+	horaFin_tut TIME not null,
+	
+	CONSTRAINT tutoria_mat_fk foreign key (id_mat)
+ 	references MATERIA (id_mat)match simple
+);
+
+--------TABLA REPRESENTANTE---------
+create table REPRESENTANTE(
+ 	id_rep INT not null PRIMARY KEY,
+ 	nombre_rep VARCHAR(30) not null,
+	apellido_rep VARCHAR(30) not null,
+	cedula_rep VARCHAR(15) not null,
+	genero_rep VARCHAR(5) not null,
+	fechaNacimiento_rep DATE not null,
+	telefonoDomicilio_rep VARCHAR(15) not null,
+	celular_rep VARCHAR(15) not null,
+	direccion_rep VARCHAR(30) not null
+);
+
+--------TABLA CLASE---------
+create table CLASE(
+	id_cla INT not null PRIMARY KEY,
+	id_cur INT not null,
+ 	id_pro INT not null,
+	fecha_cla DATE NOT null,	
+	horaInicio_cla TIME not null,
+	horaFin_cla TIME not null,
+	observaciones_cla VARCHAR(45) not null,
+	
+	CONSTRAINT clase_curso_fk foreign key (id_cur)
+ 	references CURSO (id_cur)match simple,
+	
+	CONSTRAINT clase_profesor_fk foreign key (id_pro)
+ 	references PROFESOR (id_pro)match simple
+);
+
+--------TABLA ESTUDIANTE---------
+create table ESTUDIANTE(
+ 	id_est INT not null PRIMARY KEY,
+ 	id_rep INT not nulL,
+	id_cla INT not nulL,
+	nombre_est VARCHAR(30) not null,
+	apellido_est VARCHAR(30) not null,
+	cedula_est VARCHAR(15) not null,
+	genero_est VARCHAR(5) not null,
+	fechaNacimiento_est DATE not null,
+	telefonoDomicilio_est VARCHAR(15) not null,
+	celular_est VARCHAR(15) not null,
+	direccion_est VARCHAR(30) not null,
+	
+	
+	CONSTRAINT estudiante_representante_fk foreign key (id_rep)
+ 	references REPRESENTANTE (id_rep)match simple,
+	CONSTRAINT estudiante_clase_fk foreign key (id_cla)
+ 	references CLASE (id_cla)match simple
+);
+
+--------TABLA CALIFICACION---------
+create table CALIFICACION(
+	id_cal INT PRIMARY KEY not nulL,
+	id_est INT not null,
+	parcial1_cal FLOAT,
+	parcial2_cal FLOAT,
+	
+	CONSTRAINT calificacion_estudiante_fk foreign key (id_est)
+ 	references ESTUDIANTE (id_est)match simple
+);
+
+
+
+------inserccion----
+
+
+
+
+
+
+--------CURSOS---------
+insert into CURSO values(1, '1A',10);
+insert into CURSO values(2, '1B',10);
+insert into CURSO values(3, '1C',10);
+
+--------MATERIAS---------
+insert into MATERIA values(1,'CIENCIAS NATURALES');
+insert into MATERIA values(2,'CIENCIAS SOCIALES');
+insert into MATERIA values(3,'MATEMATICAS');
+
+--------PROFESORES---------
+insert into PROFESOR values(1,1,'JUAN','QUIROZ','112465623','0995456231','cordova');
+insert into PROFESOR values(2,2,'MARCOS','SEGOVIA','454545555','0987450021','5 de agosto');
+insert into PROFESOR values(3,3,'MELINA','MENDOZA','4567892145','0911451214','24 de mayo');
+
+
+--------TUTORIAS---------
+insert into TUTORIA values(1,1,'REVISION','2020/12/01','13:00:00','14:00:00');
+insert into TUTORIA values(2,2,'REPASO EXAMEN','2020/12/02','10:00:00','11:00:00');
+insert into TUTORIA values(3,3,'REPASO CLASE','2020/12/03','09:00:00','09:30:00');
+
+--------REPRESENTANTE---------
+insert into REPRESENTANTE values(1,'JAVIER','VILLAFUERTE',7894561232,'M','1999/02/01','785960','0955412755','Las vegas');
+insert into REPRESENTANTE values(2,'ARIEL','ESPAÑA',5844578912,'M','1999/12/01','615346','0964578825','eloy alfaro');
+insert into REPRESENTANTE values(3,'OSCAR','VELEZ',1245789632,'M','1999/12/01','789152','0984561237','san pedro');
+
+
+--------CLASES---------
+insert into CLASE values(1,1,1,'2020/12/01','13:00:00','14:00:00','REPASO DE CLASE');
+insert into CLASE values(2,2,2,'2020/12/02','13:00:00','14:00:00','REPASO DE CLASE');
+insert into CLASE values(3,3,3,'2020/12/03','13:00:00','14:00:00','REPASO DE CLASE');
+
+
+--------ESTUDIANTES---------
+insert into ESTUDIANTE values(1,1,1,'LUIS','MERA', 1302456875, 'M', '1999/10/01','659452', '0965478945','8 de abril');
+insert into ESTUDIANTE values(2,2,2,'HEIDY','RIVERA',1305465845,'F','1999/10/01','234445','0967812305','Algarrobo');
+insert into ESTUDIANTE values(3,3,3,'MELINA','MORA',4567895423,'F','1999/11/01','568374','0987456321','san pedro');
+
+--------CALIFICACION---------
+insert into CALIFICACION values(1,1,6.2,7);
+insert into CALIFICACION values(2,2,6.2,7);
+insert into CALIFICACION values(3,3,6.2,7);
