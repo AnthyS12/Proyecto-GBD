@@ -1,0 +1,27 @@
+------trigger====
+
+--trigger para saber si un estudiante esta registrado en una clase--
+create or replace function tr_estudiante()
+returns trigger as $tr_estudiante$
+declare
+
+id_rep int;
+nclase int;
+
+begin
+	select count (*) into id_rep  from estudiante where id_cla=new.id_cla;
+			 select id_rep into nclase from clase ;
+	if(id_rep >= nclase) then
+	   raise exception SQLSTATE 'E0002' using
+			message = 'Este estudiante si está registrado en una clase';
+		return false;
+end if;
+return new;
+end;
+$tr_estudiante$ 
+language 'plpgsql';
+
+create trigger tr_estudiante
+before insert or update on estudiante
+for each row
+execute procedure tr_estudiante();
